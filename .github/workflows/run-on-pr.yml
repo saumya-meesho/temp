@@ -1,0 +1,26 @@
+name: Run Python Script on PR
+
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies inline
+        run: pip install requests  # 👈 Install only what’s needed, without requirements.txt
+
+      - name: Run script
+        run: python scripts/process_pr.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
