@@ -34,3 +34,6 @@ print("\nChanged Files and Diffs:")
 for file in files:
     print(f"\n--- {file['filename']} ---")
     print(file.get("patch", "[No diff shown]"))
+
+
+
