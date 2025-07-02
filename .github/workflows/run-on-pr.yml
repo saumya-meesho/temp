@@ -1,12 +1,13 @@
 name: Run Python Script on PR
 
 on:
-  pull_request:
-    types: [opened]
+  pull_request_review:
+    types: [submitted]
 
 jobs:
   run-script:
     runs-on: ubuntu-latest
+    if: github.event.review.state == 'approved'
 
     steps:
       - name: Checkout code
@@ -24,3 +25,11 @@ jobs:
         run: python scripts/process_pr.py
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+     
+      - name: Upload CMR mapping artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cmr-mapping-${{ github.event.pull_request.number }}
+          path: cmr_mapping.json
+          retention-days: 30

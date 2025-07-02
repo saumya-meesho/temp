@@ -34,3 +34,24 @@ print("\nChanged Files and Diffs:")
 for file in files:
     print(f"\n--- {file['filename']} ---")
     print(file.get("patch", "[No diff shown]"))
+
+def create_cmr_mapping_file(cmr_id: str, pr_number: str):
+    """
+    Create a JSON file mapping PR ID to CMR ID.
+    """
+    mapping_data = {
+        "pr_id": pr_number,
+        "cmr_id": cmr_id,
+        "created_at": datetime.now().isoformat(),
+        "pr_title": fetchPR.title
+    }
+    
+    # Create the mapping file
+    mapping_file = "cmr_mapping.json"
+    with open(mapping_file, 'w') as f:
+        json.dump(mapping_data, f, indent=2)
+    
+    print(f"✅ Created mapping file: {mapping_file}")
+    print(f"📋 PR #{pr_number} -> CMR {cmr_id}")
+    return mapping_file
+create_cmr_mapping_file("456", "111")
