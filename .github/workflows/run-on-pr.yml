@@ -1,13 +1,12 @@
 name: Run Python Script on PR
 
 on:
-  pull_request_review:
-    types: [submitted]
+  pull_request:
+    types: [open]
 
 jobs:
   run-script:
     runs-on: ubuntu-latest
-    if: github.event.review.state == 'approved'
 
     steps:
       - name: Checkout code
