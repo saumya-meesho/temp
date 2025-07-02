@@ -1,6 +1,7 @@
 import os
 import json
 import requests
+from datetime import datetime, timedelta
 
 # Load PR metadata from event payload
 with open(os.getenv("GITHUB_EVENT_PATH")) as f:
