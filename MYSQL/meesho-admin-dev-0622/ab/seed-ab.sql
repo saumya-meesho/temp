@@ -36,7 +36,7 @@ CREATE TABLE `audience_change_log` (
   `name` varchar(128) NOT NULL,
   `description` text NOT NULL,
   `type` varchar(32) DEFAULT NULL,
-  `refresh_query` text,
+  `refresh_query` varchar(220),
   `refresh_query_type` varchar(20) DEFAULT 'REDSHIFT',
   `refresh_frequency` int DEFAULT NULL,
   `country` varchar(5) NOT NULL,
