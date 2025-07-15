@@ -11,4 +11,4 @@ CREATE TABLE `audience_log` (
   CONSTRAINT `audience_log_ibfk_1` FOREIGN KEY (`audience_id`) REFERENCES `audiences` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE=InnoDB AUTO_INCREMENT=26696 DEFAULT CHARSET=latin1;
 
-ALTER TABLE audiences ADD COLUMN age INT;
+ALTER TABLE audiences ADD COLUMN created_timestamp timestamp NULL DEFAULT CURRENT_TIMESTAMP;
