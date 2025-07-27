@@ -18,7 +18,9 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies inline
-        run: pip install requests fetchPR  # 👈 Install only what’s needed, without requirements.txt
+
+        run: pip install requests python-dotenv # 👈 Install dependencies needed by process_pr.py
+
 
       - name: Run script
         run: python scripts/process_pr.py
@@ -32,3 +34,4 @@ jobs:
           name: cmr-mapping-${{ github.event.pull_request.number }}
           path: cmr_mapping.json
           retention-days: 30
+

@@ -1,2 +1,5 @@
 .pre-commit-config.yaml
 trufflehog/
+config.env
+scripts/__pycache__/
+docs/
