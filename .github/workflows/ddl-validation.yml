@@ -6,6 +6,11 @@ on:
     paths:
       - '**/*.sql'
   workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'PR Number to extract database paths from'
+        required: true
+        type: string
 
 jobs:
   validate-ddl:
@@ -30,7 +35,7 @@ jobs:
         # GitHub repository info (automatically available)
         GITHUB_REPOSITORY: ${{ github.repository }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        
+        GITHUB_PR: ${{ inputs.pr_number }}
         # Staging database secrets (configure in repository settings)
         STAGING_DB_HOST: ${{ secrets.STAGING_DB_HOST }}
         STAGING_DB_USER: ${{ secrets.STAGING_DB_USER }}
