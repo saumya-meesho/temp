@@ -34,7 +34,7 @@ def fetch_github_files_data():
         
         with open(event_path) as f:
             event = json.load(f)
-            pr_number = event["pull_request"]["number"]
+            pr_number = os.getenv("GITHUB_PR")
     else:
         print("🔄 Running in local environment")
         print("🔐 Using config.env for database credentials")
