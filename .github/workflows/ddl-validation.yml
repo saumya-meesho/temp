@@ -1,0 +1,64 @@
+name: DDL Validation
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - '**/*.sql'
+
+jobs:
+  validate-ddl:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Run DDL Validation
+      env:
+        # GitHub repository info (automatically available)
+        GITHUB_REPOSITORY: ${{ github.repository }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
+        # Staging database secrets (configure in repository settings)
+        STAGING_DB_HOST: ${{ secrets.STAGING_DB_HOST }}
+        STAGING_DB_USER: ${{ secrets.STAGING_DB_USER }}
+        STAGING_DB_PASSWORD: ${{ secrets.STAGING_DB_PASSWORD }}
+        STAGING_DB_NAME: ${{ secrets.STAGING_DB_NAME }}
+        STAGING_DB_PORT: ${{ secrets.STAGING_DB_PORT }}
+      run: |
+        python scripts/ddl_validator.py
+    
+    - name: Comment PR on validation failure
+      if: failure()
+      uses: actions/github-script@v6
+      with:
+        script: |
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: '❌ **DDL Validation Failed**\n\nThe migration file validation against staging database failed. Please check the workflow logs for details and fix the issues before merging.'
+          })
+    
+    - name: Comment PR on validation success
+      if: success()
+      uses: actions/github-script@v6
+      with:
+        script: |
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: '✅ **DDL Validation Passed**\n\nAll migration operations have been validated against the staging database. Safe to deploy to production!'
+          }) 
