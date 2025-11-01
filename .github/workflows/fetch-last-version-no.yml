@@ -1,4 +1,5 @@
 name: Run Python Script to fetch last version no. and Store Output
+run-name: Run-${{ github.event.inputs.trigger_id }}
 
 on:
   workflow_dispatch:
@@ -12,7 +13,6 @@ on:
 
 jobs:
   run-python:
-    name: Run-${{ github.event.inputs.trigger_id }}
     runs-on: ubuntu-latest
 
     steps:
