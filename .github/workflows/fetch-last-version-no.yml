@@ -25,6 +25,8 @@ jobs:
 
       - name: Run Python script
         id: runscript
+        env:
+          INPUT_NUMBER: ${{ github.event.inputs.number }}
         run: |
           import math, json, os
           n = int(os.environ['INPUT_NUMBER'])
