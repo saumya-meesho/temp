@@ -1,0 +1,42 @@
+name: Run Python Script to fetch last version no. and Store Output
+
+on:
+  workflow_dispatch:
+    inputs:
+      trigger_id:
+        description: "Unique ID for this trigger"
+        required: true
+      number:
+        description: "Input number for computation"
+        required: true
+
+jobs:
+  run-python:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Run Python script
+        id: runscript
+        run: |
+          import math, json, os
+          n = int(os.environ['INPUT_NUMBER'])
+          result = n ** 2  # You can replace this with any function
+          output = {"input": n, "square": result}
+          with open("result.json", "w") as f:
+              json.dump(output, f)
+          print("Result:", output)
+        shell: python
+
+      - name: Upload result as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: result-${{ github.event.inputs.trigger_id }}
+          path: result.json
