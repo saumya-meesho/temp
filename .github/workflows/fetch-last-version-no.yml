@@ -12,6 +12,7 @@ on:
 
 jobs:
   run-python:
+    name: Run-${{ github.event.inputs.trigger_id }}
     runs-on: ubuntu-latest
 
     steps:
